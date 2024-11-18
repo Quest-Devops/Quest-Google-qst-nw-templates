@@ -3,7 +3,7 @@ module "vpc" {
   for_each     = {
     for k, v in try(var.vpc,{}): k => v if v.delete != true
   }
-  source                                    = "git::https://[PASSWORD]@github.com/Quest-Devops/Quest-Google-network-services-Modules.git//terraform-google-cloud-vpc.git?ref=v1.0.0"
+  source                                    = "git::https://[PASSWORD]@github.com/Quest-Devops/Quest-Google-network-services-Modules.git//terraform-google-cloud-vpc?ref=v1.0.0"
   network_name                              = each.key 
   description                               = each.value.description
   auto_create_subnetworks                   = each.value.auto_create_subnetworks
