@@ -94,7 +94,8 @@ jobs:
            
              # Destroying
     - name: Terraform Apply
-           terraform destroy
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+      run: terraform destroy
            --var-file=vpc.tfvars \
            --var-file=subnet.tfvars \
            --var-file=firewall.tfvars \
