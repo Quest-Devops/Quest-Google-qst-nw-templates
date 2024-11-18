@@ -82,5 +82,8 @@ jobs:
 
       # Apply Terraform changes automatically
     - name: Terraform Apply
-      run: terraform apply -var-file=vpc.tfvars -var-file=subnet.tfvars -var-file=firewall.tfvars -var-file=peering.tfvars -var-file=address.tfvars -var-file=router.tfvars -var-file=nat.tfvars -auto-approve
       working-directory: ${{ env.WORKING_DIRECTORY }}
+      run: terraform apply -var-file=vpc.tfvars -var-file=subnet.tfvars -var-file=firewall.tfvars -var-file=peering.tfvars -var-file=address.tfvars -var-file=router.tfvars -var-file=nat.tfvars -auto-approve
+           terraform destroy -var-file=vpc.tfvars -var-file=subnet.tfvars -var-file=firewall.tfvars -var-file=peering.tfvars -var-file=address.tfvars -var-
+
+      
