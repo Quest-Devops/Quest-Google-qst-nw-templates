@@ -83,7 +83,7 @@ jobs:
       # Apply Terraform changes automatically
     - name: Terraform Apply
       working-directory: ${{ env.WORKING_DIRECTORY }}
-      run:  \
+      run: |
         terraform apply 
            -var-file=vpc.tfvars \
            -var-file=subnet.tfvars \
