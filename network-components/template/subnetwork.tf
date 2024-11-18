@@ -4,7 +4,7 @@ module "vpc_subnets" {
   for_each     = {
     for k, v in try(var.subnets,{}): k => v if v.delete != true
   }
-  source                                 = "git::https://[PASSWORD]github.com/Quest-Devops/Quest-Google-network-services-Modules.git//terraform-google-cloud-subnet?ref=v1.0.0"
+  source                                 = "git::https://[PASSWORD]@github.com/Quest-Devops/Quest-Google-network-services-Modules.git//terraform-google-cloud-subnet?ref=v1.0.0"
   project_id                             = each.value.project_id
   network_name                           = each.key
   subnets                                = each.value.subnets

@@ -3,7 +3,7 @@
   for_each                              = {
     for k, v in try(var.regional_address,{}): k => v if v.delete != true
   }
-  source                                = "git::https://[PASSWORD]github.com/Quest-Devops/Quest-Google-network-services-Modules.git//terraform-google-cloud-regional-address?ref=v1.0.0"
+  source                                = "git::https://[PASSWORD]@github.com/Quest-Devops/Quest-Google-network-services-Modules.git//terraform-google-cloud-regional-address?ref=v1.0.0"
   project_id                            = each.value.project_id
   region                                = each.value.region
   address_type                          = each.value.address_type
