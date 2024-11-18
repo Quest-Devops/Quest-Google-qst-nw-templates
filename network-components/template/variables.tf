@@ -14,7 +14,7 @@ variable "subnets" {
 
 #........................................... VPC Firewall ..............................................#
 
-  variable "firewall" {
+  variable "vpc_firewall_rule" {
     type = any
     sensitive   = false
 }
