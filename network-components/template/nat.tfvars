@@ -1,6 +1,6 @@
 nat                                       = {
   "network-poc-nat"               = {
-    delete                                = true
+    delete                                = false
     project_id                            = "prj-boot-iac-us-4000-poc"
       region                              = "us-central1"
       router_name                         = "network-poc-router"
