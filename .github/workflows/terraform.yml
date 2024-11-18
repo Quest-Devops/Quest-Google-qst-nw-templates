@@ -94,15 +94,15 @@ jobs:
            -var-file=nat.tfvars -auto-approve
            
              # Destroying
-    - name: Terraform Apply
-      working-directory: ${{ env.WORKING_DIRECTORY }}
-      run: |
-        terraform destroy
-           -var-file=vpc.tfvars \
-           -var-file=subnet.tfvars \
-           -var-file=firewall.tfvars \
-           -var-file=peering.tfvars \
-           -var-file=address.tfvars \
-           -var-file=router.tfvars \
-           -var-file=nat.tfvars -auto-approve
+    # - name: Terraform Apply
+    #   working-directory: ${{ env.WORKING_DIRECTORY }}
+    #   run: |
+    #     terraform destroy
+    #        -var-file=vpc.tfvars \
+    #        -var-file=subnet.tfvars \
+    #        -var-file=firewall.tfvars \
+    #        -var-file=peering.tfvars \
+    #        -var-file=address.tfvars \
+    #        -var-file=router.tfvars \
+    #        -var-file=nat.tfvars -auto-approve
       
