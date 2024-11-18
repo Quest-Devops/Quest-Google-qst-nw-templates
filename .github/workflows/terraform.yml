@@ -63,7 +63,9 @@ jobs:
         tflint --var-file=vpc.tfvars --var-file=subnet.tfvars --var-file=firewall.tfvars --var-file=peering.tfvars --var-file=address.tfvars --var-file=router.tfvars --var-file=nat.tfvars
       working-directory: ${{ env.WORKING_DIRECTORY }}
       
-      
+    - name: unlocking state
+      run: terraform force-unlock 1731959430306482
+      working-directory: ${{ env.WORKING_DIRECTORY }}
       # Initialize Terraform
     - name: Terraform init
       run: terraform init -upgrade
@@ -77,12 +79,7 @@ jobs:
       # Run Terraform plan
     - name: Terraform Plan
       run: terraform plan --var-file=vpc.tfvars --var-file=subnet.tfvars --var-file=firewall.tfvars --var-file=peering.tfvars --var-file=address.tfvars --var-file=router.tfvars --var-file=nat.tfvars  -out=plan.out
-      working-directory: ${{ env.WORKING_DIRECTORY }}
-
-    - name: unlocking state
-      run: terraform force-unlock 1731959430306482
-      working-directory: ${{ env.WORKING_DIRECTORY }}
-    
+      working-directory: ${{ env.WORKING_DIRECTORY }}    
 
       # Apply Terraform changes automatically
     - name: Terraform Apply
