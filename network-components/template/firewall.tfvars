@@ -1,4 +1,4 @@
-firewall                         = {
+vpc_firewall_rule                      = {
 
   # .............. Network HUB Firewall Configuration ............. #
   "network-vpc-1"       = {
