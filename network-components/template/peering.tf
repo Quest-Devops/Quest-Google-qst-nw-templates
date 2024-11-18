@@ -4,7 +4,7 @@ module "vpc_peering_1_2" {
   for_each                              = {
     for k, v in try(var.vpc_peering,{}): k => v if v.delete != true
   }
-  source                                = "git::https://[PASSWORD]github.com/Quest-Devops/Quest-Google-network-services-Modules.git////terraform-google-cloud-vpc-peering?ref=v1.0.0"
+  source                                = "git::https://[PASSWORD]@github.com/Quest-Devops/Quest-Google-network-services-Modules.git////terraform-google-cloud-vpc-peering?ref=v1.0.0"
   prefix                                = each.key
   local_network                         = each.value.local_network
   peer_network                          = each.value.peer_network
