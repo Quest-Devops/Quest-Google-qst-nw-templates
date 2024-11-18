@@ -76,7 +76,7 @@ jobs:
 
       # Run Terraform plan
     - name: Terraform Plan
-      run: terraform plan -var-file=vpc.tfvars -var-file=subnet.tfvars -var-file=firewall.tfvars -var-file=peering.tfvars -var-file=address.tfvars -var-file=router.tfvars -var-file=nat.tfvars -out=plan.out
+      run: terraform plan --var-file=vpc.tfvars --var-file=subnet.tfvars --var-file=firewall.tfvars --var-file=peering.tfvars --var-file=address.tfvars --var-file=router.tfvars --var-file=nat.tfvars  -out=plan.out
       working-directory: ${{ env.WORKING_DIRECTORY }}
     
 
@@ -84,6 +84,5 @@ jobs:
     - name: Terraform Apply
       working-directory: ${{ env.WORKING_DIRECTORY }}
       run: terraform apply --var-file=vpc.tfvars --var-file=subnet.tfvars --var-file=firewall.tfvars --var-file=peering.tfvars --var-file=address.tfvars --var-file=router.tfvars --var-file=nat.tfvars -auto-approve
-           terraform destroy -var-file=vpc.tfvars -var-file=subnet.tfvars -var-file=firewall.tfvars -var-file=peering.tfvars -var-file=address.tfvars --var--file=router.tfvars --var-file=nat.tfvars -auto-approve
-
+           terraform destroy --var-file=vpc.tfvars --var-file=subnet.tfvars --var-file=firewall.tfvars --var-file=peering.tfvars --var-file=address.tfvars --var-file=router.tfvars --var-file=nat.tfvars -auto-approve
       
