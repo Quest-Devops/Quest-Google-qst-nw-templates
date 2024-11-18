@@ -83,7 +83,8 @@ jobs:
       # Apply Terraform changes automatically
     - name: Terraform Apply
       working-directory: ${{ env.WORKING_DIRECTORY }}
-      run: terraform apply 
+      run:  \
+        terraform apply 
            -var-file=vpc.tfvars \
            -var-file=subnet.tfvars \
            -var-file=firewall.tfvars \
@@ -95,7 +96,8 @@ jobs:
              # Destroying
     - name: Terraform Apply
       working-directory: ${{ env.WORKING_DIRECTORY }}
-      run: terraform destroy
+      run: |
+        terraform destroy
            -var-file=vpc.tfvars \
            -var-file=subnet.tfvars \
            -var-file=firewall.tfvars \
