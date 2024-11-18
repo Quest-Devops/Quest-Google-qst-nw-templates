@@ -15,7 +15,7 @@ regional_address = {
       "env"                       = "prd",       
       "appname"                   = "notset",       
       "appid"                     = "notset",              
-    },labels
+    }
     ip_version                    = null
     ipv6_endpoint_type            = null
     address_ip                    = "10.0.0.3"
