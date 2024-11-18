@@ -1,0 +1,86 @@
+name: 'Terraform CI'
+
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+  workflow_dispatch:
+
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: 'read'
+      id-token: 'write'
+    env:
+      WORKING_DIRECTORY: network-components/template        # change this as per client name directory which ever you'are creating
+      PROJECT_ID: seed-440521                               # needs to change as part of script
+      PROJECT_NUMBER: 908852839842                          # needs to change as project
+      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
+      
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      # Checkout the repository code
+    - name: Checkout Module Repository
+      uses: actions/checkout@v3
+      with: 
+        token: ${{ secrets.GIT_TOKEN }}
+       
+      # Set up Terraform
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v3
+
+      # Set Google Cloud credentials for authentication
+    - name: Set Google Cloud Credentials
+      uses: 'google-github-actions/auth@v2'
+      with:
+        service_account: 'network-sa@${{env.PROJECT_ID}}.iam.gserviceaccount.com'  # my-service-account@my-project.iam.gserviceaccont.com
+      
+        workload_identity_provider: 'projects/${{env.PROJECT_NUMBER}}/locations/global/workloadIdentityPools/github-visa-quest/providers/access-visa-quest' # "projects/project_number/locations/global/workloadIdentityPools/WIF_POOL/providers/WIF_PROVIDER"           
+
+    - name: Replacing placholders
+      run: |
+          echo "*****replacing placeholders******"
+          sed -i "s|\[PASSWORD\]|${{ env.GIT_TOKEN }}|g" *.tf
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+      
+      #Installing Tf Lint
+      
+    - name: Install tflint
+      run: |
+        curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh| bash
+      # Run Terraform Lint (tflint)
+    - name: Run Terraform Lint
+      run: |
+        tflint --var-file=vpc.tfvars --var-file=subnet.tfvars --var-file=firewall.tfvars --var-file=peering.tfvars --var-file=address.tfvars --var-file=router.tfvars --var-file=nat.tfvars
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+      
+      
+      # Initialize Terraform
+    - name: Terraform init
+      run: terraform init -upgrade
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+
+      # Check Terraform formatting
+    - name: Terraform Format
+      run: terraform fmt -recursive
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+
+      # Run Terraform plan
+    - name: Terraform Plan
+      run: terraform plan -var-file=vpc.tfvars -var-file=subnet.tfvars -var-file=firewall.tfvars -var-file=peering.tfvars -var-file=address.tfvars -var-file=router.tfvars -var-file=nat.tfvars -out=plan.out
+      working-directory: ${{ env.WORKING_DIRECTORY }}
+    
+
+      # Apply Terraform changes automatically
+    - name: Terraform Apply
+      run: terraform apply -var-file=vpc.tfvars -var-file=subnet.tfvars -var-file=firewall.tfvars -var-file=peering.tfvars -var-file=address.tfvars -var-file=router.tfvars -var-file=nat.tfvars -auto-approve
+      working-directory: ${{ env.WORKING_DIRECTORY }}
