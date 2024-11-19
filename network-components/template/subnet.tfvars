@@ -25,7 +25,7 @@ subnets = {
         subnet_flow_logs_filter_expr           = true
       },
       {          
-        subnet_name                            = "nw-2-vpc-subnet-2" 
+        subnet_name                            = "nw-vpc-1-subnet-2" 
         subnet_ip                              = "10.1.0.0/24"
         subnet_region                          = "us-central1"
         #reserved_internal_range                = null

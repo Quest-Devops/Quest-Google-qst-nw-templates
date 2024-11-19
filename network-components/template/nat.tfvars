@@ -20,7 +20,7 @@ nat                                       = {
       source_subnetwork_ip_ranges_to_nat  = "LIST_OF_SUBNETWORKS"
       subnetworks                         = [
         {
-          name                            = "network-stack-poc-subnet"
+          name                            = "nw-vpc-1-subnet-1"
           source_ip_ranges_to_nat         = ["ALL_IP_RANGES"]
           secondary_ip_range_names        = null
         }
