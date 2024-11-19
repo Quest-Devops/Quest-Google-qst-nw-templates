@@ -102,5 +102,5 @@ jobs:
            -var-file=peering.tfvars \
            -var-file=address.tfvars \
            -var-file=router.tfvars \
-           -var-file=nat.tfvars 
+           -var-file=nat.tfvars
       
