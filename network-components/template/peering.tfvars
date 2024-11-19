@@ -2,7 +2,7 @@ vpc_peering                         = {
 
   # .................. VPC Peering between HUB and Spokes Configuration ................ #
   "peering"                      = {
-    delete                              = false
+    delete                              = true
     local_network                       = "https://www.googleapis.com/compute/v1/projects/prj-boot-iac-us-4000-poc/global/networks/network-vpc-1"
     peer_network                        = "https://www.googleapis.com/compute/v1/projects/prj-shrd-secu-4313-poc/global/networks/network-vpc-2"
     export_local_custom_routes          = true

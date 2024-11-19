@@ -2,7 +2,7 @@ vpc_firewall_rule                      = {
 
   # .............. Network HUB Firewall Configuration ............. #
   "network-vpc-1"       = {
-    delete                       = false
+    delete                       = true
     project_id                   = "prj-boot-iac-us-4000-poc"
     rules                        = [
       {

@@ -1,6 +1,6 @@
 regional_address = {
   "network-poc-address" = {
-    delete                        = false
+    delete                        = true
     project_id                    = "prj-boot-iac-us-4000-poc"
     region                        = "us-central1"
     address_type                  = "EXTERNAL"
