@@ -18,6 +18,6 @@ regional_address = {
     }
     ip_version                    = null
     ipv6_endpoint_type            = null
-    address_ip                    = "10.128.0.0"
+    address_ip                    = "10.1.0.255"
   }
 }
