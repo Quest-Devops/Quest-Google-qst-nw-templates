@@ -18,4 +18,5 @@
   ip_version                            = each.value.ip_version        
   ipv6_endpoint_type                    = each.value.ipv6_endpoint_type
   address_ip                            = each.value.address_ip
+  depends_on                            = [ module.vpc_subnets ]
 } 
