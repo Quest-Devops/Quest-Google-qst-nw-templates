@@ -2,7 +2,7 @@ vpc                             = {
 
 # .............. Network HUB Project VPCs Configuration ............. #
   "network-vpc-1"                     = {
-    delete                                    = true
+    delete                                    = false
     description                               = "HUB Shared VPC used to share Network Component for Infra Shared Services"
     auto_create_subnetworks                   = false
     routing_mode                              = "GLOBAL"
@@ -18,7 +18,7 @@ vpc                             = {
     delete_default_internet_gateway_routes    = null
   },
     "network-vpc-2"                     = {
-    delete                                    = true
+    delete                                    = false
     description                               = "HUB Shared VPC used to share Network Component for Infra Shared Services"
     auto_create_subnetworks                   = false
     routing_mode                              = "GLOBAL"

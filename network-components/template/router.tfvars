@@ -1,6 +1,6 @@
 router                      = {
   "nw-poc-router"       = {
-    delete                        = true
+    delete                        = false
     project_id                    = "prj-boot-iac-us-4000-poc"
     region                        = "us-central1"
     network                       = "network-vpc-1"
