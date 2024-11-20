@@ -1,7 +1,7 @@
 router                      = {
   "nw-poc-router"       = {
     delete                        = false
-    project_id                    = "prj-boot-iac-us-4000-poc"
+    project_id                    = "seed-440521"
     region                        = "us-central1"
     network                       = "network-vpc-1"
     router_description            = "testing"

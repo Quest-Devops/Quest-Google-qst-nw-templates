@@ -3,7 +3,7 @@ vpc_firewall_rule                      = {
   # .............. Network HUB Firewall Configuration ............. #
   "network-vpc-1"       = {
     delete                       = false
-    project_id                   = "prj-boot-iac-us-4000-poc"
+    project_id                   = "seed-440521"
     rules                        = [
       {
         name                     = "fw-hub-ingress-allow-22-3389-tcp-01"

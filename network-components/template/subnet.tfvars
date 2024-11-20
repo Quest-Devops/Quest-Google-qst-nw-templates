@@ -4,7 +4,7 @@ subnets = {
   # ................... HUB VPC Subnets Configuration .................. #
   "network-vpc-1" = {
     delete                                     = false
-    project_id                                 = "prj-boot-iac-us-4000-poc"
+    project_id                                 = "seed-440521"
     subnets                                    = [
       {          
         subnet_name                            = "nw-vpc-1-subnet-1" 
@@ -68,7 +68,7 @@ subnets = {
   },
   "network-vpc-2" = {
     delete                                     = false
-    project_id                                 = "prj-shrd-secu-4313-poc"
+    project_id                                 = "seed-440521"
     subnets                                    = [
       {          
         subnet_name                            = "nw-vpc-2-subnet-1" 
