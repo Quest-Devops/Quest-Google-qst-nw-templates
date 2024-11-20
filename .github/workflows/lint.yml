@@ -35,10 +35,4 @@ jobs:
      - name: Run tflint
        run: |
        working-directory: ${{ env.WORKING-DIRECTORY }}
-        tflint -var-file=vpc.tfvars \
-           -var-file=subnet.tfvars \
-           -var-file=firewall.tfvars \
-           -var-file=peering.tfvars \
-          -var-file=address.tfvars \
-          -var-file=router.tfvars \
-          -var-file=nat.tfvars
+        tflint -var-file=vpc.tfvars  -var-file=subnet.tfvars -var-file=firewall.tfvars -var-file=peering.tfvars -var-file=address.tfvars -var-file=router.tfvars -var-file=nat.tfvars
