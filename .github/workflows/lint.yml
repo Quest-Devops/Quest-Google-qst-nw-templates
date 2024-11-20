@@ -34,7 +34,7 @@ jobs:
    
      - name: Run tflint
        run: |
-        cd Org-Templates
+       working-directory: ${{ env.WORKING-DIRECTORY }}
         tflint -var-file=vpc.tfvars \
            -var-file=subnet.tfvars \
            -var-file=firewall.tfvars \
