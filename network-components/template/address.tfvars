@@ -1,7 +1,7 @@
 regional_address = {
   "network-poc-address" = {
     delete                        = false
-    project_id                    = "prj-boot-iac-us-4000-poc"
+    project_id                    = "seed-440521"
     region                        = "us-central1"
     address_type                  = "EXTERNAL"
     address_description           = "Static  External IP Address for NAT"

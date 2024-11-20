@@ -1,7 +1,7 @@
 nat                                       = {
   "network-poc-nat"               = {
     delete                                = false
-    project_id                            = "prj-boot-iac-us-4000-poc"
+    project_id                            = "seed-440521"
       region                              = "us-central1"
       router_name                         = "nw-poc-router"
       nat_ip_allocate_option              = "MANUAL_ONLY"

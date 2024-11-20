@@ -1,0 +1,39 @@
+name: Terraform Lint
+on:
+  workflow_call:
+      
+jobs:
+ lint:
+   name: Run Terraform Lint
+   runs-on: ubuntu-latest
+   defaults:
+      run: 
+        shell: bash      
+   env: 
+      WORKING-DIRECTORY: network-components/template
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}
+
+   steps:
+     - name: Checkout code
+       uses: actions/checkout@v3
+     - name: Set up Terraform
+       uses: hashicorp/setup-terraform@v2
+       with:
+         terraform_version: 'latest'
+         
+     - name: Install tflint
+       run: |
+         curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh| bash
+          # Replacing placeholders in Terraform files
+     - name: Replacing placeholders
+       run: |
+          echo "***** Replacing placeholders with GIT_TOKEN *****"
+          sed -i "s|\[PASSWORD\]|${{ env.GH_TOKEN }}|g" *.tf
+       working-directory: ${{ env.WORKING-DIRECTORY }}
+        
+   
+     - name: Run tflint
+       working-directory: ${{ env.WORKING-DIRECTORY }}
+       run: |
+      
+        tflint --var-file=vpc.tfvars  --var-file=subnet.tfvars --var-file=firewall.tfvars --var-file=peering.tfvars --var-file=address.tfvars --var-file=router.tfvars --var-file=nat.tfvars

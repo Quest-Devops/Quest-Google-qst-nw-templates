@@ -1,93 +1,155 @@
-name: 'Terraform CiCd'
+
+name: cicd
 
 on:
-  push:
-    branches:
-    - main
+  push: 
+    branches: [ "main" ]
   pull_request:
-  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: 'write'
+
+env: 
+  WORKING-DIRECTORY: network-components/template
+  GH_TOKEN: ${{ secrets.GH_TOKEN }}
 
 jobs:
-  terraform:
-    name: 'Terraform'
+  init:
     runs-on: ubuntu-latest
-
-    permissions:
-      contents: 'read'
-      id-token: 'write'
-    env:
-      WORKING_DIRECTORY: network-components/template        # change this as per client name directory which ever you'are creating
-      PROJECT_ID: seed-440521                               # needs to change as part of script
-      PROJECT_NUMBER: 908852839842                          # needs to change as project
-      GIT_TOKEN: ${{ secrets.GIT_TOKEN }}
-      
-    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
     defaults:
-      run:
-        shell: bash
+      run: 
+        shell: bash       
 
     steps:
-      # Checkout the repository code
-    - name: Checkout Module Repository
-      uses: actions/checkout@v3
-      with: 
-        token: ${{ secrets.GIT_TOKEN }}
-       
-      # Set up Terraform
-    - name: Setup Terraform
-      uses: hashicorp/setup-terraform@v3
+      # Checkout repository to GitHub action runner
+      - name: Checkout
+        uses: actions/checkout@v3
 
-      # Set Google Cloud credentials for authentication
-    - name: Set Google Cloud Credentials
-      uses: 'google-github-actions/auth@v2'
-      with:
-        service_account: 'network-sa@${{env.PROJECT_ID}}.iam.gserviceaccount.com'  # my-service-account@my-project.iam.gserviceaccont.com
-      
-        workload_identity_provider: 'projects/${{env.PROJECT_NUMBER}}/locations/global/workloadIdentityPools/github-visa-quest/providers/access-visa-quest' # "projects/project_number/locations/global/workloadIdentityPools/WIF_POOL/providers/WIF_PROVIDER"           
+      - id: auth
+        uses: google-github-actions/auth@v0.4.0
+        with:
+          workload_identity_provider: '${{ secrets.WIF }}'
+          service_account: '${{ secrets.SA }}'
 
-    - name: Replacing placholders
-      run: |
-          echo "*****replacing placeholders******"
+      # Replacing placeholders in Terraform files
+      - name: Replacing placeholders
+        run: |
+          echo "***** Replacing placeholders with GIT_TOKEN *****"
+          sed -i "s|\[PASSWORD\]|${{ env.GH_TOKEN }}|g" *.tf
+        working-directory: ${{ env.WORKING-DIRECTORY }}
+
+      # Terraform Init
+      - name: Terraform Init
+        working-directory: ${{ env.WORKING-DIRECTORY }}
+        run: |
+          terraform init 
+          terraform init -upgrade 
+        
+        
+
+  validate:
+    runs-on: ubuntu-latest
+    needs: init
+
+    steps:
+      # Checkout repository to GitHub action runner
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: auth
+        uses: google-github-actions/auth@v0.4.0
+        with:
+          workload_identity_provider: '${{ secrets.WIF }}'
+          service_account: '${{ secrets.SA }}'
+
+      # Replacing placeholders in Terraform files
+      - name: Replacing placeholders
+        run: |
+          echo "***** Replacing placeholders with GIT_TOKEN *****"
           sed -i "s|\[PASSWORD\]|${{ env.GIT_TOKEN }}|g" *.tf
-      working-directory: ${{ env.WORKING_DIRECTORY }}
-      
-      #Installing Tf Lint
-      
-    - name: Install tflint
-      run: |
-        curl -s https://raw.githubusercontent.com/terraform-linters/tflint/master/install_linux.sh| bash
-      # Run Terraform Lint (tflint)
-    - name: Run Terraform Lint
-      run: |
-        tflint --var-file=vpc.tfvars --var-file=subnet.tfvars --var-file=firewall.tfvars --var-file=peering.tfvars --var-file=address.tfvars --var-file=router.tfvars --var-file=nat.tfvars
-      working-directory: ${{ env.WORKING_DIRECTORY }}
-      
-      # Initialize Terraform
-    - name: Terraform init
-      run: terraform init -upgrade
-      working-directory: ${{ env.WORKING_DIRECTORY }}
+        working-directory: ${{ env.WORKING-DIRECTORY }}
+ 
 
-      # Check Terraform formatting
-    - name: Terraform Format
-      run: terraform fmt -recursive
-      working-directory: ${{ env.WORKING_DIRECTORY }}
+  tflint:
+    needs: validate
+    uses: ./.github/workflows/lint.yml
 
-      # Run Terraform plan
-    - name: Terraform Plan
-      run: terraform plan --var-file=vpc.tfvars --var-file=subnet.tfvars --var-file=firewall.tfvars --var-file=peering.tfvars --var-file=address.tfvars --var-file=router.tfvars --var-file=nat.tfvars  -out=plan.out
-      working-directory: ${{ env.WORKING_DIRECTORY }}    
+  plan:
+    runs-on: ubuntu-latest
+    needs: tflint
 
-      # Apply Terraform changes automatically
-    - name: Terraform Apply
-      working-directory: ${{ env.WORKING_DIRECTORY }}
-      run: |
-        terraform apply -auto-approve \
-        -var-file=vpc.tfvars \
-        -var-file=subnet.tfvars \
-        -var-file=firewall.tfvars \
-        -var-file=peering.tfvars \
-        -var-file=address.tfvars \
-        -var-file=router.tfvars \
-        -var-file=nat.tfvars
-           
-      
+    steps:
+      # Checkout repository to GitHub action runner
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: auth
+        uses: google-github-actions/auth@v0.4.0
+        with:
+          workload_identity_provider: '${{ secrets.WIF }}'
+          service_account: '${{ secrets.SA }}'
+
+      # Replacing placeholders in Terraform files
+      - name: Replacing placeholders
+        run: |
+          echo "***** Replacing placeholders with GIT_TOKEN *****"
+          sed -i "s|\[PASSWORD\]|${{ env.GH_TOKEN }}|g" *.tf
+        working-directory: ${{ env.WORKING-DIRECTORY }}
+
+      # Terraform Plan
+      - name: Terraform Plan
+        working-directory: ${{ env.WORKING-DIRECTORY }}
+        run: |
+          terraform init -upgrade
+          terraform plan  --var-file=vpc.tfvars  --var-file=subnet.tfvars --var-file=firewall.tfvars --var-file=peering.tfvars --var-file=address.tfvars --var-file=router.tfvars --var-file=nat.tfvars
+
+
+  apply:
+    runs-on: ubuntu-latest
+    needs: plan
+    environment: Production
+    if: github.ref == 'refs/heads/main'
+
+
+    steps:
+      # Checkout repository to GitHub action runner
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - id: auth
+        uses: google-github-actions/auth@v0.4.0
+        with:
+          workload_identity_provider: '${{ secrets.WIF }}'
+          service_account: '${{ secrets.SA }}'
+
+      # Replacing placeholders in Terraform files
+      - name: Replacing placeholders
+        run: |
+          echo "***** Replacing placeholders with GIT_TOKEN *****"
+          sed -i "s|\[PASSWORD\]|${{ env.GH_TOKEN }}|g" *.tf
+        working-directory: ${{ env.WORKING-DIRECTORY }}
+
+      # Terraform Apply
+      - name: Terraform Apply
+        working-directory: ${{ env.WORKING-DIRECTORY }}
+        run: |
+          terraform init -upgrade
+          terraform apply -auto-approve \
+           -var-file=vpc.tfvars \
+           -var-file=subnet.tfvars \
+           -var-file=firewall.tfvars \
+           -var-file=peering.tfvars \
+          -var-file=address.tfvars \
+          -var-file=router.tfvars \
+          -var-file=nat.tfvars
+          terraform destroy --auto-approve \
+                -var-file=vpc.tfvars \
+           -var-file=subnet.tfvars \
+           -var-file=firewall.tfvars \
+           -var-file=peering.tfvars \
+          -var-file=address.tfvars \
+          -var-file=router.tfvars \
+          -var-file=nat.tfvars
+
+    

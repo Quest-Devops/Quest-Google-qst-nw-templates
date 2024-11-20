@@ -13,7 +13,7 @@ vpc                             = {
     enable_ula_internal_ipv6                  = null
     internal_ipv6_range                       = null
     network_firewall_policy_enforcement_order = null
-    project_id                                = "prj-boot-iac-us-4000-poc"
+    project_id                                = "seed-440521"
     delete_routes                             = true
     delete_default_internet_gateway_routes    = null
   },
@@ -29,7 +29,7 @@ vpc                             = {
     enable_ula_internal_ipv6                  = null
     internal_ipv6_range                       = null
     network_firewall_policy_enforcement_order = null
-    project_id                                = "prj-shrd-secu-4313-poc"
+    project_id                                = "seed-440521"
     delete_routes                             = true
     delete_default_internet_gateway_routes    = null
   },
