@@ -102,14 +102,8 @@ jobs:
         working-directory: ${{ env.WORKING-DIRECTORY }}
         run: |
           terraform init -upgrade
-          terraform plan   
-            -var-file=vpc.tfvars \
-           -var-file=subnet.tfvars \
-           -var-file=firewall.tfvars \
-           -var-file=peering.tfvars \
-          -var-file=address.tfvars \
-          -var-file=router.tfvars \
-          -var-file=nat.tfvars
+          terraform plan  --var-file=vpc.tfvars  --var-file=subnet.tfvars --var-file=firewall.tfvars --var-file=peering.tfvars --var-file=address.tfvars --var-file=router.tfvars --var-file=nat.tfvars
+
 
   apply:
     runs-on: ubuntu-latest
